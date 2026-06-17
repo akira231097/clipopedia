@@ -21,6 +21,20 @@ Tag the bot under a post — *"what's a good clip on founder burnout?"* — and 
 
 This is a clean-room **reference implementation** built to demonstrate the architecture of a clip-recommendation assistant. It ships with a fully **offline demo** (deterministic fakes, no API keys) so you can run the entire pipeline in seconds, plus real adapters for OpenAI, Pinecone, Cohere, Gemini, PostgreSQL, AWS SQS/S3, and the X API. Because every layer depends only on abstract interfaces, swapping the whole backend from offline-fakes to real services is a single environment variable.
 
+## Try it
+
+Run the **offline** pipeline locally — no API keys, no network:
+
+```bash
+pip install -e . gradio
+python app.py                 # interactive web demo (Gradio)
+# or
+python -m clipopedia demo     # readable CLI trace
+```
+
+🚀 **One-click live demo** — deploy the offline app to Hugging Face Spaces in ~3 minutes: see [deploy/HF_SPACE.md](deploy/HF_SPACE.md).
+📐 **Architecture diagram + design deep-dive:** [docs/DESIGN.md](docs/DESIGN.md).
+
 ## Key features
 
 - **Hybrid retrieval** — dense embeddings for meaning + sparse/BM25 for exact names and jargon, fused with a tunable `alpha`.
@@ -33,6 +47,23 @@ This is a clean-room **reference implementation** built to demonstrate the archi
 - **Fuzzy gazetteer** — reconciles "lena ortiz" / "the long game show" to canonical catalog names before filtering.
 - **Hexagonal architecture** — the pipeline depends only on `Protocol` ports; demo vs. live is one env var, no pipeline code changes.
 - **Runs fully offline** — deterministic in-memory fakes power both the demo and the test suite, with no network and no credentials.
+
+## Evaluation
+
+The retrieval pipeline is measured by a reproducible offline harness ([`evals/retrieval_eval.py`](evals/retrieval_eval.py)) over a hand-labeled query set against the bundled 14-clip synthetic corpus. These numbers measure the **pipeline architecture** with deterministic stand-in models (hash embedder, Jaccard reranker, rule-based LLM) — they are *not* production accuracy claims; they make the system measurable and the harness reproducible.
+
+| Metric | Score |
+| --- | --- |
+| Hit@1 | 0.93 |
+| Hit@3 | 1.00 |
+| Recall@5 | 1.00 |
+| MRR | 0.96 |
+| Selection accuracy | 0.93 |
+| End-to-end latency — p50 / p95 / p99 | **2.4 / 5.9 / 10.7 ms** |
+
+```bash
+python evals/retrieval_eval.py   # reproduce
+```
 
 ## Architecture
 
