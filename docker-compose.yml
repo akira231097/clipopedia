@@ -1,0 +1,10 @@
+# Local container run. Reads secrets from your .env (never commit it).
+services:
+  clipopedia:
+    build: .
+    image: clipopedia:latest
+    env_file:
+      - .env
+    environment:
+      CLIPOPEDIA_BACKEND: live
+    restart: unless-stopped

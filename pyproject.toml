@@ -1,0 +1,80 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "clipopedia"
+version = "0.1.0"
+description = "A mention-driven hybrid-RAG assistant that recommends the most relevant podcast clip."
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "MIT" }
+authors = [{ name = "akira231097" }]
+keywords = ["rag", "retrieval", "langgraph", "hybrid-search", "hyde", "reranking", "llm"]
+classifiers = [
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "License :: OSI Approved :: MIT License",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+
+# Core dependencies needed for the retrieval logic and the offline demo.
+dependencies = [
+    "pydantic>=2.6",
+    "pydantic-settings>=2.2",
+    "numpy>=1.26",
+    "rapidfuzz>=3.6",
+    "python-dotenv>=1.0",
+    "tenacity>=8.2",
+    "rich>=13.7",
+]
+
+[project.optional-dependencies]
+# Adapters that talk to real external services. The package and the demo
+# import nothing from here unless you select the "live" backend.
+live = [
+    "openai>=1.30",
+    "cohere>=5.5",
+    "pinecone>=5.0",
+    "pinecone-text>=0.9",
+    "langgraph>=0.2",
+    "tweepy>=4.14",
+    "boto3>=1.34",
+    "psycopg[binary]>=3.1",
+]
+dev = [
+    "pytest>=8.0",
+    "pytest-asyncio>=0.23",
+    "ruff>=0.4",
+    "mypy>=1.9",
+]
+
+[project.scripts]
+clipopedia = "clipopedia.cli:main"
+
+[project.urls]
+Homepage = "https://github.com/akira231097/clipopedia"
+Repository = "https://github.com/akira231097/clipopedia"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "C4", "SIM"]
+ignore = ["E501"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
+asyncio_mode = "auto"
+addopts = "-q"
+
+[tool.mypy]
+python_version = "3.11"
+ignore_missing_imports = true
+warn_unused_ignores = true

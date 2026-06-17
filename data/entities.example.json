@@ -1,0 +1,25 @@
+{
+  "_comment": "Sample entity catalog for fuzzy matching. Entirely fictional names used by the demo. Replace with your own canonical guests / hosts / shows when running live.",
+  "guests": [
+    "Dr. Lena Ortiz",
+    "Sam Whitfield",
+    "Priya Raman",
+    "Hiro Tanaka",
+    "Marcus Bell",
+    "Elena Vossberg"
+  ],
+  "hosts": [
+    "Mara Quinn",
+    "Devin Cole",
+    "Avery Sloan",
+    "Noa Frank",
+    "Ravi Menon"
+  ],
+  "shows": [
+    "The Long Game",
+    "Builders & Backers",
+    "Signal / Noise",
+    "The Deep End",
+    "Frontier Notes"
+  ]
+}

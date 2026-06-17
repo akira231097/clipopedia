@@ -1,0 +1,44 @@
+# --- Secrets & local config ---
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+credentials.json
+secrets.*
+
+# --- Python ---
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.eggs/
+build/
+dist/
+.installed.cfg
+*.egg
+
+# --- Virtual environments ---
+.venv/
+venv/
+env/
+ENV/
+
+# --- Testing & coverage ---
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+coverage.xml
+
+# --- Caches / models downloaded at runtime ---
+.cache/
+*.bm25.json
+
+# --- IDE / OS ---
+.idea/
+.vscode/
+*.swp
+.DS_Store
+Thumbs.db

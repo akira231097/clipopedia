@@ -1,0 +1,46 @@
+{
+  "_comment": "Template AWS ECS Fargate task definition. Replace every <PLACEHOLDER>. No real account ids, ARNs, or endpoints are committed to this repo.",
+  "family": "clipopedia",
+  "networkMode": "awsvpc",
+  "requiresCompatibilities": ["FARGATE"],
+  "cpu": "1024",
+  "memory": "2048",
+  "taskRoleArn": "arn:aws:iam::<ACCOUNT_ID>:role/clipopedia-task-role",
+  "executionRoleArn": "arn:aws:iam::<ACCOUNT_ID>:role/clipopedia-execution-role",
+  "containerDefinitions": [
+    {
+      "name": "clipopedia",
+      "image": "<ACCOUNT_ID>.dkr.ecr.<REGION>.amazonaws.com/clipopedia:latest",
+      "essential": true,
+      "environment": [
+        { "name": "CLIPOPEDIA_BACKEND", "value": "live" },
+        { "name": "AWS_REGION", "value": "<REGION>" },
+        { "name": "PINECONE_INDEX", "value": "clip-hybrid" },
+        { "name": "PINECONE_NAMESPACE", "value": "default" },
+        { "name": "MENTIONS_QUEUE_URL", "value": "https://sqs.<REGION>.amazonaws.com/<ACCOUNT_ID>/<QUEUE_NAME>" },
+        { "name": "CLIP_BUCKET", "value": "<CLIP_BUCKET_NAME>" },
+        { "name": "BOT_HANDLE", "value": "@YourBotHandle" }
+      ],
+      "secrets": [
+        { "name": "OPENAI_API_KEY", "valueFrom": "arn:aws:secretsmanager:<REGION>:<ACCOUNT_ID>:secret:clipopedia/OPENAI_API_KEY" },
+        { "name": "GEMINI_API_KEY", "valueFrom": "arn:aws:secretsmanager:<REGION>:<ACCOUNT_ID>:secret:clipopedia/GEMINI_API_KEY" },
+        { "name": "COHERE_API_KEY", "valueFrom": "arn:aws:secretsmanager:<REGION>:<ACCOUNT_ID>:secret:clipopedia/COHERE_API_KEY" },
+        { "name": "PINECONE_API_KEY", "valueFrom": "arn:aws:secretsmanager:<REGION>:<ACCOUNT_ID>:secret:clipopedia/PINECONE_API_KEY" },
+        { "name": "DATABASE_URL", "valueFrom": "arn:aws:secretsmanager:<REGION>:<ACCOUNT_ID>:secret:clipopedia/DATABASE_URL" },
+        { "name": "TWITTER_CONSUMER_KEY", "valueFrom": "arn:aws:secretsmanager:<REGION>:<ACCOUNT_ID>:secret:clipopedia/TWITTER_CONSUMER_KEY" },
+        { "name": "TWITTER_CONSUMER_SECRET", "valueFrom": "arn:aws:secretsmanager:<REGION>:<ACCOUNT_ID>:secret:clipopedia/TWITTER_CONSUMER_SECRET" },
+        { "name": "TWITTER_ACCESS_TOKEN", "valueFrom": "arn:aws:secretsmanager:<REGION>:<ACCOUNT_ID>:secret:clipopedia/TWITTER_ACCESS_TOKEN" },
+        { "name": "TWITTER_ACCESS_TOKEN_SECRET", "valueFrom": "arn:aws:secretsmanager:<REGION>:<ACCOUNT_ID>:secret:clipopedia/TWITTER_ACCESS_TOKEN_SECRET" },
+        { "name": "TWITTER_BEARER_TOKEN", "valueFrom": "arn:aws:secretsmanager:<REGION>:<ACCOUNT_ID>:secret:clipopedia/TWITTER_BEARER_TOKEN" }
+      ],
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-group": "/ecs/clipopedia",
+          "awslogs-region": "<REGION>",
+          "awslogs-stream-prefix": "ecs"
+        }
+      }
+    }
+  ]
+}
