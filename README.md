@@ -13,6 +13,10 @@
   <img alt="Lint" src="https://img.shields.io/badge/lint-ruff-black">
 </p>
 
+<p align="center">
+  <img src="assets/demo.svg" alt="Clip'O'pedia offline demo" width="600">
+</p>
+
 ---
 
 ## Overview
